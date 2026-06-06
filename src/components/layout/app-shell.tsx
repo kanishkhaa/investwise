@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { OnboardingTour } from "@/components/onboarding-tour";
 
-const NAV = [
+const NAV: { to: string; label: string; icon: typeof Home; tour?: string }[] = [
   { to: "/", label: "Home", icon: Home },
   { to: "/learn", label: "Learn", icon: GraduationCap, tour: "nav-learn" },
   { to: "/quiz", label: "Quiz", icon: Sparkles, tour: "nav-quiz" },
   { to: "/risk", label: "Risk", icon: ShieldAlert, tour: "nav-risk" },
   { to: "/compare", label: "Compare", icon: Scale, tour: "nav-compare" },
   { to: "/simulate", label: "Simulate", icon: TrendingUp, tour: "nav-simulate" },
-] as const;
+];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const p = useProgress();
