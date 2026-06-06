@@ -104,7 +104,7 @@ A mock trading interface that simulates prices locally and lets users practice b
   - holdings value
   - total P&L vs starting cash
 - Reset button restores the practice portfolio:
-  - cash = ₹1,00,000
+  - cash = Can be edited by the user
   - empty positions
 
 
