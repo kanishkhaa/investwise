@@ -79,8 +79,8 @@ Side-by-side projection for the same initial amount over a chosen period.
 - Summary cards display final values and % differences.
 
 
-### 7) Trading simulator (`/simulate`)
-A mock trading interface that simulates prices locally and lets users practice buy/sell decisions.
+### 7) Practice Investment Sandbox (`/simulate`)
+A simulated environment allows users to experience market fluctuations without risking real money.
 
 **Key features:**
 - Select a mock instrument (tabs):
