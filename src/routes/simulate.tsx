@@ -42,6 +42,7 @@ function SimulatePage() {
   const [sym, setSym] = useState<Sym>("RELIANCE");
   const [tick, setTick] = useState(0);
   const [qty, setQty] = useState<string>("1");
+  const [initialCash, setInitialCash] = useState<number>(100000);
 
   const series = useMemo(() => genSeries(sym, 80 + tick, sym.length * 7 + 11), [sym, tick]);
 
@@ -65,7 +66,7 @@ function SimulatePage() {
     return sum + px * pos.qty;
   }, 0);
   const totalValue = p.portfolio.cash + totalEquity;
-  const startValue = 100000;
+  const startValue = initialCash;
   const totalPnL = totalValue - startValue;
 
   const trade = (side: "buy" | "sell") => {
@@ -104,15 +105,51 @@ function SimulatePage() {
     }
   };
 
+  useEffect(() => {
+    // Keep local draft in sync with stored cash when user navigates back to this page.
+    setInitialCash(p.portfolio.cash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const reset = () => {
-    updateProgress((pr) => ({ ...pr, portfolio: { cash: 100000, positions: {}, history: [] } }));
-    toast.info("Practice portfolio reset to ₹1,00,000");
+    updateProgress((pr) => ({ ...pr, portfolio: { cash: initialCash, positions: {}, history: [] } }));
+    toast.info(`Practice portfolio reset to ₹${initialCash.toLocaleString("en-IN")}`);
   };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
       {/* Portfolio bar */}
       <div className="grid gap-3 sm:grid-cols-4">
+        <Card className="p-4">
+          <div className="text-xs text-muted-foreground">Practice capital</div>
+          <Input
+            type="number"
+            min={1000}
+            step={1000}
+            value={initialCash}
+            onChange={(e) => setInitialCash(Math.max(0, Number(e.target.value) || 0))}
+            className="mt-1"
+          />
+          <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+            <span>Stored cash</span>
+            <span className="font-semibold">₹{p.portfolio.cash.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-3 w-full"
+            onClick={() => {
+              updateProgress((pr) => ({
+                ...pr,
+                portfolio: { cash: initialCash, positions: {}, history: [] },
+              }));
+              toast.info(`Practice capital set to ₹${initialCash.toLocaleString("en-IN")}`);
+            }}
+          >
+            Apply
+          </Button>
+        </Card>
+
         <Card className="p-4 sm:col-span-2">
           <div className="flex items-center justify-between">
             <div>
@@ -120,7 +157,7 @@ function SimulatePage() {
               <div className="mt-1 font-display text-2xl font-bold">₹{totalValue.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</div>
             </div>
             <Badge className={totalPnL >= 0 ? "bg-success text-success-foreground" : "bg-destructive text-destructive-foreground"}>
-              {totalPnL >= 0 ? "+" : ""}₹{totalPnL.toFixed(0)} · {((totalPnL / startValue) * 100).toFixed(2)}%
+              {totalPnL >= 0 ? "+" : ""}₹{totalPnL.toFixed(0)} · {startValue > 0 ? ((totalPnL / startValue) * 100).toFixed(2) : "0.00"}%
             </Badge>
           </div>
         </Card>
