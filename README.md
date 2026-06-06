@@ -1,6 +1,6 @@
 # Investwise
 
-Investwise is a gamified investing literacy platform built with **TanStack Router** + **React**. It guides users through a structured learning journey, evaluates knowledge via a quiz, helps them visualize risk, and provides an offline practice simulator.
+Investwise is a gamified investing literacy platform .It guides users through a structured learning journey, evaluates knowledge via a quiz, helps them visualize risk, and provides an offline practice simulator.
 
 ## What’s included
 
